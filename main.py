@@ -12,7 +12,7 @@ from streamlit_lottie import st_lottie
 from streamlit_lottie import st_lottie_spinner
 import sys
 import requests
-
+import platform
 
 try:
     from elevenlabs import stream
@@ -150,6 +150,7 @@ def summarize_to_markdown(txt_path: str, md_path: str):
 def talk_to_me(text: str, filename: str):
     ele_voice_id = "2EiwWnXFnvU5JabPnv8n"
     mpv_exists = shutil.which("mpv") is not None
+    current_os = platform.system()
 
     if mpv_exists and stream and ElevenLabs:
         ele_labs_client = ElevenLabs(api_key=ELEVEN_LABS_API_KEY)
@@ -160,7 +161,7 @@ def talk_to_me(text: str, filename: str):
         stream(audio_stream)
     else:
         if not mpv_exists:
-            print(
+            st.info(
                 "⚠️ mpv was not found - install and add to PATH if you want real time streaming functionality\n🍁Falling back to use vlc library"
             )
 
@@ -182,8 +183,14 @@ def talk_to_me(text: str, filename: str):
                     for chunk in resp.iter_bytes():
                         f.write(chunk)
 
-        player = vlc.MediaPlayer(filename)
-        player.play()
+
+        if current_os == "Windows" and shutil.which("vlc"):
+            player = vlc.MediaPlayer(filename)
+            player.play()
+        else:
+            with open(filename, "rb") as f:
+                audio_bytes = f.read()
+            st.audio(data=audio_bytes, autoplay=True)
 
         # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
 

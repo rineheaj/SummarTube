@@ -168,7 +168,7 @@ def talk_to_me(text: str, filename: str):
     mpv_exists = shutil.which("mpv") is not None
     current_os = platform.system()
 
-    target_file = Path(__file__).resolve().parent / filename
+    target_file = Path(__file__).resolve().parent / "sounds" / filename
 
     if target_file.exists():
         if current_os == "Windows" and shutil.which("vlc"):

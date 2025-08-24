@@ -260,12 +260,6 @@ def main():
     st.header("Summarize it with Groq", width="stretch", divider="grey")
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
-    # 1) User inputs
-    story_name = st.text_input("🗃️ File Name ", "")
-    out_folder = st.text_input("📂 Folder Name")
-    vid_id = st.text_input("🎥 YouTube video ID", placeholder=None)
-
-    
 
     if st.button("Playdoe Guy"):
         load_lottie(
@@ -275,7 +269,16 @@ def main():
             height=500,
         )
         talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
-        
+
+    # 1) User inputs
+    story_name = st.text_input("🗃️ File Name ", "")
+    out_folder = st.text_input("📂 Folder Name")
+    vid_id = st.text_input("🎥 YouTube video ID", placeholder=None)
+
+    
+
+    
+
 
     # 2) Generate button
     if st.button("Generate & Preview"):

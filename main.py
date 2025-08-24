@@ -35,24 +35,24 @@ ELEVEN_LABS_API_KEY = st.secrets["ELEVEN_LABS_KEY"]
 DEFAULT_VIDEO_ID = "XJC5WB2Bwrc"
 
 
-
-
-
 if not GROQ_API_KEY and ELEVEN_LABS_API_KEY:
     raise RuntimeError("API key was not detected")
 
 
-
-st.markdown("""
+st.markdown(
+    """
     <style>
         .stApp {
             background-color: black;
             color: white;
         }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
-st.markdown("""
+st.markdown(
+    """
 <style>
 .preview-box {
     background: linear-gradient(to bottom right, #111827, #1f2937);
@@ -81,7 +81,9 @@ st.markdown("""
     font-family: 'Courier New', monospace;
 }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 def resource_path(filename: str) -> Path:
@@ -89,7 +91,6 @@ def resource_path(filename: str) -> Path:
     if hasattr(sys, "_MEIPASS"):  # running from a PyInstaller bundle
         return Path(sys._MEIPASS) / filename
     return Path(__file__).parent / filename
-
 
 
 @deprecated(reason="Not in use")
@@ -109,18 +110,18 @@ def save_transcript(video_id: str, txt_path: str):
     console.print(f"✅ Saved -> {txt_path}")
 
 
-
-def display_lottie_url(url=None, height=300, key='lottie'):
+def display_lottie_url(url=None, height=300, key="lottie"):
     def load_lottie_url(url):
         r = requests.get(url)
         if r.status_code != 200:
             return None
         return r.json()
+
     lottie_animation = load_lottie_url(url=url)
     if lottie_animation:
         st_lottie(lottie_animation, height=height, key=key)
     else:
-        st.error('Failed to load the Lottie animation')
+        st.error("Failed to load the Lottie animation")
 
 
 def summarize_to_markdown(txt_path: str, md_path: str):
@@ -151,10 +152,18 @@ def summarize_to_markdown(txt_path: str, md_path: str):
 
 
 def talk_to_me(text: str, filename: str):
-    
     ele_voice_id = "2EiwWnXFnvU5JabPnv8n"
     mpv_exists = shutil.which("mpv") is not None
     current_os = platform.system()
+
+    target_file = Path(__file__).resolve().parent / filename
+
+    if target_file.exists():
+        if current_os == "Windows" and shutil.which("vlc"):
+            vlc.MediaPlayer(str(target_file)).play()
+        else:
+            st.audio(target_file.read_bytes(), format="audio/mp3")
+        return
 
     if mpv_exists and stream and ElevenLabs:
         ele_labs_client = ElevenLabs(api_key=ELEVEN_LABS_API_KEY)
@@ -187,19 +196,7 @@ def talk_to_me(text: str, filename: str):
                     for chunk in resp.iter_bytes():
                         f.write(chunk)
 
-
-        if current_os == "Windows" and shutil.which("vlc"):
-            player = vlc.MediaPlayer(filename)
-            player.play()
-        else:
-            with open(filename, "rb") as f:
-                audio_bytes = f.read()
-                st.audio(data=audio_bytes, format="audio/mp3")
-
         # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
-
-
-
 
 
 def run(basename: str, output_dir: str, video_id: str = DEFAULT_VIDEO_ID):
@@ -225,40 +222,40 @@ def main():
 
     if "welcome_msg" not in st.session_state:
         st.session_state.welcome_msg = talk_to_me(
-            text="Welcome to Mr. Markdown.",
-            filename="welcome.mp3"
+            text="Welcome to Mr. Markdown.", filename="welcome.mp3"
         )
-
-
 
     # 1) User inputs
     story_name = st.text_input("🧾 Story Name ", "")
     out_folder = st.text_input("📂 Output folder", "place_holder")
-    vid_id = st.text_input("🎥 YouTube video ID", DEFAULT_VIDEO_ID, placeholder="mB0EBW-vDSQ")
+    vid_id = st.text_input(
+        "🎥 YouTube video ID", DEFAULT_VIDEO_ID, placeholder="mB0EBW-vDSQ"
+    )
 
     # 2) Generate button
     if st.button("Generate & Preview"):
         if not story_name.strip():
             st.error("Enter a story basename.")
             return
-        
+
         talk_to_me(
-            text="Please wait while Groq works some magic",
-            filename="wait_for_groq.mp3"
+            text="Please wait while Groq works some magic", filename="wait_for_groq.mp3"
         )
 
         # ensure output dir exists
         os.makedirs(out_folder, exist_ok=True)
         md_path = Path(out_folder) / f"{Path(story_name).stem}.md"
 
-        # 3) Summarizer 
+        # 3) Summarizer
         base_dir = Path(__file__).resolve().parent
         lottie_file = base_dir / "lottie_thottie" / "Cat and Ball.json"
-        
-        with open(lottie_file, mode="r",  encoding="utf-8") as infile:
+
+        with open(lottie_file, mode="r", encoding="utf-8") as infile:
             animation_json = json.load(infile)
 
-        with st_lottie_spinner(animation_source=animation_json, key="spin_me_right_round"):
+        with st_lottie_spinner(
+            animation_source=animation_json, key="spin_me_right_round"
+        ):
             try:
                 run(story_name, out_folder, vid_id)
             except Exception as e:
@@ -268,8 +265,7 @@ def main():
         # 4) Read the markdown and render it
         if md_path.exists():
             talk_to_me(
-                text="Markdown is ready for you sirrr.",
-                filename="markdown_ready.mp3"
+                text="Markdown is ready for you sirrr.", filename="markdown_ready.mp3"
             )
 
             st.success(f"✅ Summary ready at `{md_path}`")

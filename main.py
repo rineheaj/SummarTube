@@ -258,7 +258,7 @@ def main():
     if st.button("Playdoe Guy"):
         load_display_lottie_file(
             path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json",
-            height=600
+            height=500
         )
 
     # 2) Generate button

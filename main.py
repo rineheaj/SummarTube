@@ -251,7 +251,7 @@ def main():
         base_dir = Path(__file__).resolve().parent
         lottie_file = base_dir / "lottie_thottie" / "Cat and Ball.json"
         
-        with lottie_file.open(lottie_file, mode="r",  encoding="utf-8") as infile:
+        with open(lottie_file, mode="r",  encoding="utf-8") as infile:
             animation_json = json.load(infile)
 
         with st_lottie_spinner(animation_source=animation_json, key="spin_me_right_round"):

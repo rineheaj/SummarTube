@@ -232,7 +232,7 @@ def main():
     st.title("📽️ YouTube Video Summarizer")
     st.write("Fetch a transcript, summarize it with Groq, then check out the Markdown.")
 
-    st.session_state.welcome_msg = talk_to_me(
+    talk_to_me(
         text="Welcome to Mr. Markdown.", filename="welcome.mp3"
     )
 

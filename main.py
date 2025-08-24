@@ -267,9 +267,14 @@ def main():
     st.header("Summarize it with Groq", width="stretch", divider="grey")
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
-    talk_to_me(
+
+    if "greeting" not in st.session_state:
+        st.session_state.greeting = False
+
+    if not st.session_state.greeting:
+        st.session_state.greeting = talk_to_me(
         text="Welcome to Mr. Markdown.", filename="welcome.mp3"
-    )
+        )
 
     # 1) User inputs
     story_name = st.text_input("🧾 Story Name ", "")

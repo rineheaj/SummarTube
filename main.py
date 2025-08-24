@@ -262,7 +262,7 @@ def main():
         if md_path.exists():
             talk_to_me(
                 text="Markdown is ready for you sirrr.",
-                filename="markdown_ready"
+                filename="markdown_ready.mp3"
             )
 
             st.success(f"✅ Summary ready at `{md_path}`")

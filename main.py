@@ -168,7 +168,7 @@ def sum_mark(txt_path: str, md_path: str):
     )
     instructions = """
     Please summarize the following transcript and format it as a fun, emoji-rich Markdown file that cannot have any rainbows under any circumstances.
-    Make sure the emojis are not in the text but just the title headers.
+    Make sure the emojis are not in the text but just the title headers. Also please make sure to replace rainbows with something else.
     Remember to add to the summary by looking up something or multiple nice things about the subject if you determine the video to be sad.
     These nice things will add a little light to the darkness.
     Always include a section for fun likeable facts.

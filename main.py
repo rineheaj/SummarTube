@@ -235,7 +235,7 @@ def talk_to_me(text: str, filename: str):
         try:
             with httpx.Client() as client:
                 with client.stream("POST", url, headers=headers, json=payload) as resp:
-                    with open(filename, "wb") as f:
+                    with open(target_file, "wb") as f:
                         for chunk in resp.iter_bytes():
                             f.write(chunk)
         except Exception as e:

@@ -87,18 +87,11 @@ st.markdown(
 )
 
 
-
-
 def safe_tts(client, text, voice_id, model_id):
     if model_id not in FREE_MODELS:
         raise ValueError(f"Blocked model: {model_id} — not in free list")
-    
-    return client.text_to_speech.stream(
-        text=text,
-        voice_id=voice_id,
-        model_id=model_id
-    )
 
+    return client.text_to_speech.stream(text=text, voice_id=voice_id, model_id=model_id)
 
 
 def play_audio_silently(filepath: str):
@@ -210,7 +203,8 @@ def talk_to_me(text: str, filename: str):
         audio_stream = safe_tts(
             client=ele_labs_client,
             text=text,
-            voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
+            voice_id=ele_voice_id,
+            model_id="eleven_multilingual_v2",
         )
         stream(audio_stream)
     else:
@@ -239,7 +233,6 @@ def talk_to_me(text: str, filename: str):
                             f.write(chunk)
         except Exception as e:
             st.error(f"Could not write audio bytes from api to file\nERROR: {e}")
-            
 
         # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
 
@@ -267,23 +260,19 @@ def main():
     st.header("Summarize it with Groq", width="stretch", divider="grey")
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
-
-
     # 1) User inputs
     story_name = st.text_input("🗃️ File Name ", "")
-    out_folder = st.text_input("📂 Folder Name", "place_holder")
-    vid_id = st.text_input(
-        "🎥 YouTube video ID", placeholder=None
-    )
+    out_folder = st.text_input("📂 Folder Name")
+    vid_id = st.text_input("🎥 YouTube video ID", placeholder=None)
 
-    
     talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
-
 
     if st.button("Playdoe Guy"):
         load_lottie(
-            path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json",
-            height=500
+            path=Path(__file__).parent
+            / "lottie_thottie"
+            / "Animacin Yovillo Saludo.json",
+            height=500,
         )
 
     # 2) Generate button

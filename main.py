@@ -261,7 +261,7 @@ def main():
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
 
-    if st.button("Playdoe Guy"):
+    if st.button("Press me"):
         load_lottie(
             path=Path(__file__).parent
             / "lottie_thottie"

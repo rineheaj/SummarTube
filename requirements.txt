@@ -63,7 +63,6 @@ python-dateutil
 python-dotenv
 python-multipart
 python-vlc
-pywin32
 pyyaml
 referencing
 requests

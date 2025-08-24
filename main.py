@@ -99,7 +99,7 @@ def preview_in_terminal(markdown_txt: str):
 
 
 def save_transcript(video_id: str, txt_path: str):
-    transcript = YouTubeTranscriptApi.get_transcript(video_id)
+    transcript = YouTubeTranscriptApi.fetch(video_id)
     with open(txt_path, "w", encoding="utf-8") as f:
         for e in transcript:
             f.write(f"{e['start']:.2f}s: {e['text']}\n")

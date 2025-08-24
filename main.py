@@ -162,7 +162,7 @@ def talk_to_me(text: str, filename: str):
         if current_os == "Windows" and shutil.which("vlc"):
             vlc.MediaPlayer(str(target_file)).play()
         else:
-            st.audio(target_file.read_bytes(), format="audio/mp3")
+            st.audio(target_file.read_bytes(), format="audio/mp3", autoplay=True)
         return
 
     if mpv_exists and stream and ElevenLabs:

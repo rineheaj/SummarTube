@@ -232,10 +232,9 @@ def main():
     st.title("📽️ YouTube Video Summarizer")
     st.write("Fetch a transcript, summarize it with Groq, then check out the Markdown.")
 
-    if "welcome_msg" not in st.session_state:
-        st.session_state.welcome_msg = talk_to_me(
-            text="Welcome to Mr. Markdown.", filename="welcome.mp3"
-        )
+    st.session_state.welcome_msg = talk_to_me(
+        text="Welcome to Mr. Markdown.", filename="welcome.mp3"
+    )
 
     # 1) User inputs
     story_name = st.text_input("🧾 Story Name ", "")

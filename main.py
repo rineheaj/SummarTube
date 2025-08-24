@@ -268,13 +268,6 @@ def main():
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
 
-    if "greeting" not in st.session_state:
-        st.session_state.greeting = False
-
-    if not st.session_state.greeting:
-        st.session_state.greeting = talk_to_me(
-        text="Welcome to Mr. Markdown.", filename="welcome.mp3"
-        )
 
     # 1) User inputs
     story_name = st.text_input("🧾 Story Name ", "")
@@ -282,6 +275,9 @@ def main():
     vid_id = st.text_input(
         "🎥 YouTube video ID", DEFAULT_VIDEO_ID, placeholder="mB0EBW-vDSQ"
     )
+
+    talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
+
 
     if st.button("Playdoe Guy"):
         load_lottie(

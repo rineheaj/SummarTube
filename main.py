@@ -122,6 +122,16 @@ def save_transcript(video_id: str, txt_path: str):
     console.print(f"✅ Saved -> {txt_path}")
 
 
+def load_display_lottie_file(path, height=300, key="lottie"):
+    try:
+        with open(path, mode="r", encoding="utf-8") as f:
+            animation_json = json.load(f)
+        st_lottie(animation_json, height=height, key=key)
+    except Exception as e:
+        st.warning(f"Could not load animation: {e}")
+
+
+
 def display_lottie_url(url=None, height=300, key="lottie"):
     def load_lottie_url(url):
         r = requests.get(url)
@@ -245,6 +255,11 @@ def main():
         "🎥 YouTube video ID", DEFAULT_VIDEO_ID, placeholder="mB0EBW-vDSQ"
     )
 
+    if st.button("Playdoe Guy"):
+        load_display_lottie_file(
+            path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json"
+        )
+
     # 2) Generate button
     if st.button("Generate & Preview"):
         if not story_name.strip():
@@ -261,9 +276,9 @@ def main():
 
         # 3) Summarizer
         base_dir = Path(__file__).resolve().parent
-        lottie_file = base_dir / "lottie_thottie" / "Cat and Ball.json"
+        cat_loader_file = base_dir / "lottie_thottie" / "Cat and Ball.json"
 
-        with open(lottie_file, mode="r", encoding="utf-8") as infile:
+        with open(cat_loader_file, mode="r", encoding="utf-8") as infile:
             animation_json = json.load(infile)
 
         with st_lottie_spinner(

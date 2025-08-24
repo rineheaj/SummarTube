@@ -210,8 +210,7 @@ def talk_to_me(text: str, filename: str):
         audio_stream = safe_tts(
             client=ele_labs_client,
             text=text,
-            voice_id=ele_voice_id,
-            model_id="eleven_multilingual_v2"
+            voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
         )
         stream(audio_stream)
     else:
@@ -235,10 +234,9 @@ def talk_to_me(text: str, filename: str):
         try:
             with httpx.Client() as client:
                 with client.stream("POST", url, headers=headers, json=payload) as resp:
-                    with open(target_file, "wb") as f:
+                    with open(filename, "wb") as f:
                         for chunk in resp.iter_bytes():
                             f.write(chunk)
-            st.write(f"Sound file saved: {target_file}")
         except Exception as e:
             st.error(f"Could not write audio bytes from api to file\nERROR: {e}")
             
@@ -279,7 +277,7 @@ def main():
     )
 
     
-    talk_to_me(text="Welcome to Markdown Mayheem", filename="new_welcome.mp3")
+    talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
 
 
     if st.button("Playdoe Guy"):
@@ -321,7 +319,7 @@ def main():
         # 4) Read the markdown and render it
         if md_path.exists():
             talk_to_me(
-                text="Markdown is ready for youu.", filename="new_markdown_ready.mp3"
+                text="Markdown is ready for you sirrr.", filename="markdown_ready.mp3"
             )
 
             st.success(f"✅ Summary ready at `{md_path}`")

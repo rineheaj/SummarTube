@@ -1,0 +1,13 @@
+[project]
+name = "summer-dummer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "deprecated>=1.2.18",
+    "elevenlabs>=2.11.0",
+    "pydantic-ai>=0.4.7",
+    "python-vlc>=3.0.21203",
+    "requests>=2.32.4",
+]

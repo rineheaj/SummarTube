@@ -265,7 +265,7 @@ def main():
     out_folder = st.text_input("📂 Folder Name")
     vid_id = st.text_input("🎥 YouTube video ID", placeholder=None)
 
-    talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
+    
 
     if st.button("Playdoe Guy"):
         load_lottie(
@@ -274,6 +274,8 @@ def main():
             / "Animacin Yovillo Saludo.json",
             height=500,
         )
+        talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
+        
 
     # 2) Generate button
     if st.button("Generate & Preview"):

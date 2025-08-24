@@ -248,7 +248,7 @@ def main():
         md_path = Path(out_folder) / f"{Path(story_name).stem}.md"
 
         # 3) Summarizer 
-        lottie_file = (r"lottie_thottie\Cat and Ball.json")
+        lottie_file = (r"lottie_thottie\\Cat and Ball.json")
         with open(lottie_file, "r", encoding="utf-8") as infile:
             animation_json = json.load(infile)
         with st_lottie_spinner(animation_source=animation_json, key="spin_me_right_round"):

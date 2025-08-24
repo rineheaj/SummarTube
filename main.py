@@ -151,25 +151,31 @@ def summarize_to_markdown(txt_path: str, md_path: str):
 
 
 def talk_to_me(text: str, filename: str):
+    target_file = Path(__file__).resolve().parent / filename
     ele_voice_id = "2EiwWnXFnvU5JabPnv8n"
     mpv_exists = shutil.which("mpv") is not None
     current_os = platform.system()
 
     if mpv_exists and stream and ElevenLabs:
+        # Real-time streaming branch
         ele_labs_client = ElevenLabs(api_key=ELEVEN_LABS_API_KEY)
-
         audio_stream = ele_labs_client.text_to_speech.stream(
-            text=text, voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
+            text=text,
+            voice_id=ele_voice_id,
+            model_id="eleven_multilingual_v2"
         )
         stream(audio_stream)
+
     else:
+        # Info for fallback mode
         if not mpv_exists:
             st.info(
-                "⚠️ mpv was not found - install and add to PATH if you want real time streaming functionality\n🍁Falling back to use vlc library"
+                "⚠️ mpv was not found — install and add to PATH for real-time streaming.\n"
+                "🍁 Falling back to VLC library or browser audio playback."
             )
 
+        # Always write to target_file (absolute path), not a bare filename
         url = f"https://api.elevenlabs.io/v1/text-to-speech/{ele_voice_id}"
-
         headers = {
             "xi-api-key": ELEVEN_LABS_API_KEY,
             "Content-Type": "application/json",
@@ -180,22 +186,20 @@ def talk_to_me(text: str, filename: str):
             "voice_settings": {"stability": 0.4, "similarity_boost": 0.85},
         }
 
+        # Fetch audio from ElevenLabs
         with httpx.Client() as client:
             with client.stream("POST", url, headers=headers, json=payload) as resp:
-                with open(filename, "wb") as f:
+                resp.raise_for_status()
+                with target_file.open("wb") as f:
                     for chunk in resp.iter_bytes():
                         f.write(chunk)
 
-
+        # Playback logic
         if current_os == "Windows" and shutil.which("vlc"):
-            player = vlc.MediaPlayer(filename)
+            player = vlc.MediaPlayer(str(target_file))
             player.play()
         else:
-            with open(filename, "rb") as f:
-                audio_bytes = f.read()
-            st.audio(data=audio_bytes, format="audio/mp3")
-
-        # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
+            st.audio(data=target_file.read_bytes(), format="audio/mp3")
 
 
 

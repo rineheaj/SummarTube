@@ -131,7 +131,7 @@ def load_display_lottie_file(path, height=300, key="lottie"):
         st.warning(f"Could not load animation: {e}")
 
 
-
+@deprecated(reason="LEARN API")
 def display_lottie_url(url=None, height=300, key="lottie"):
     def load_lottie_url(url):
         r = requests.get(url)
@@ -257,7 +257,8 @@ def main():
 
     if st.button("Playdoe Guy"):
         load_display_lottie_file(
-            path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json"
+            path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json",
+            height=600
         )
 
     # 2) Generate button

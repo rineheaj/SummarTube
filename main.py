@@ -34,7 +34,7 @@ console = Console()
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 ELEVEN_LABS_API_KEY = st.secrets["ELEVEN_LABS_KEY"]
 DEFAULT_VIDEO_ID = "XJC5WB2Bwrc"
-
+FREE_MODELS = {"eleven_multilingual_v2"}
 
 if not GROQ_API_KEY and ELEVEN_LABS_API_KEY:
     raise RuntimeError("API key was not detected")
@@ -87,6 +87,20 @@ st.markdown(
 )
 
 
+
+
+def safe_tts(client, text, voice_id, model_id):
+    if model_id not in FREE_MODELS:
+        raise ValueError(f"Blocked model: {model_id} — not in free list")
+    
+    return client.text_to_speech.stream(
+        text=text,
+        voice_id=voice_id,
+        model_id=model_id
+    )
+
+
+
 def play_audio_silently(filepath: str):
     audio_bytes = Path(filepath).read_bytes()
     b64 = base64.b64encode(audio_bytes).decode()
@@ -122,7 +136,7 @@ def save_transcript(video_id: str, txt_path: str):
     console.print(f"✅ Saved -> {txt_path}")
 
 
-def load_display_lottie_file(path, height=300, key="lottie"):
+def load_lottie(path, height=300, key="lottie"):
     try:
         with open(path, mode="r", encoding="utf-8") as f:
             animation_json = json.load(f)
@@ -146,7 +160,7 @@ def display_lottie_url(url=None, height=300, key="lottie"):
         st.error("Failed to load the Lottie animation")
 
 
-def summarize_to_markdown(txt_path: str, md_path: str):
+def sum_mark(txt_path: str, md_path: str):
     client = httpx.AsyncClient(timeout=30)
     model = GroqModel(
         "llama-3.3-70b-versatile",
@@ -181,17 +195,22 @@ def talk_to_me(text: str, filename: str):
     target_file = Path(__file__).resolve().parent / "sounds" / filename
 
     if target_file.exists():
-        if current_os == "Windows" and shutil.which("vlc"):
-            vlc.MediaPlayer(str(target_file)).play()
-        else:
-            play_audio_silently(filepath=target_file)
-        return
+        try:
+            if current_os == "Windows" and shutil.which("vlc"):
+                vlc.MediaPlayer(str(target_file)).play()
+            else:
+                play_audio_silently(filepath=target_file)
+            return
+        except Exception as e:
+            st.error(f"Could not play target audio file: {target_file}\nERROR: {e}")
 
     if mpv_exists and stream and ElevenLabs:
         ele_labs_client = ElevenLabs(api_key=ELEVEN_LABS_API_KEY)
 
-        audio_stream = ele_labs_client.text_to_speech.stream(
-            text=text, voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
+        audio_stream = safe_tts(
+            client=ele_labs_client,
+            text=text,
+            voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
         )
         stream(audio_stream)
     else:
@@ -212,11 +231,15 @@ def talk_to_me(text: str, filename: str):
             "voice_settings": {"stability": 0.4, "similarity_boost": 0.85},
         }
 
-        with httpx.Client() as client:
-            with client.stream("POST", url, headers=headers, json=payload) as resp:
-                with open(filename, "wb") as f:
-                    for chunk in resp.iter_bytes():
-                        f.write(chunk)
+        try:
+            with httpx.Client() as client:
+                with client.stream("POST", url, headers=headers, json=payload) as resp:
+                    with open(filename, "wb") as f:
+                        for chunk in resp.iter_bytes():
+                            f.write(chunk)
+        except Exception as e:
+            st.error(f"Could not write audio bytes from api to file\nERROR: {e}")
+            
 
         # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
 
@@ -234,7 +257,7 @@ def run(basename: str, output_dir: str, video_id: str = DEFAULT_VIDEO_ID):
     md_path = out_dir / f"{base}.md"
 
     save_transcript(video_id, str(txt_path))
-    summarize_to_markdown(str(txt_path), str(md_path))
+    sum_mark(str(txt_path), str(md_path))
 
 
 def main():
@@ -256,7 +279,7 @@ def main():
     )
 
     if st.button("Playdoe Guy"):
-        load_display_lottie_file(
+        load_lottie(
             path=Path(__file__).parent / "lottie_thottie" / "Animacin Yovillo Saludo.json",
             height=500
         )

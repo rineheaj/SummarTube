@@ -1,4 +1,5 @@
 import os
+import base64
 from pathlib import Path
 from youtube_transcript_api import YouTubeTranscriptApi
 import httpx
@@ -86,6 +87,17 @@ st.markdown(
 )
 
 
+def play_audio_silently(filepath: str):
+    audio_bytes = Path(filepath).read_bytes()
+    b64 = base64.b64encode(audio_bytes).decode()
+    md = f"""
+    <audio autoplay style="display:none">
+        <source src="data:audio/mp3;base64, {b64}" type="audio/mp3">
+    </audio>
+    """
+    st.markdown(md, unsafe_allow_html=True)
+
+
 def resource_path(filename: str) -> Path:
     """Get absolute path to resource, works for dev and for PyInstaller bundle."""
     if hasattr(sys, "_MEIPASS"):  # running from a PyInstaller bundle
@@ -162,7 +174,7 @@ def talk_to_me(text: str, filename: str):
         if current_os == "Windows" and shutil.which("vlc"):
             vlc.MediaPlayer(str(target_file)).play()
         else:
-            st.audio(target_file.read_bytes(), format="audio/mp3", autoplay=True)
+            play_audio_silently(filepath=target_file)
         return
 
     if mpv_exists and stream and ElevenLabs:

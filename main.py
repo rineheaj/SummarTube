@@ -210,7 +210,8 @@ def talk_to_me(text: str, filename: str):
         audio_stream = safe_tts(
             client=ele_labs_client,
             text=text,
-            voice_id=ele_voice_id, model_id="eleven_multilingual_v2"
+            voice_id=ele_voice_id,
+            model_id="eleven_multilingual_v2"
         )
         stream(audio_stream)
     else:
@@ -276,7 +277,8 @@ def main():
         "🎥 YouTube video ID", DEFAULT_VIDEO_ID, placeholder="mB0EBW-vDSQ"
     )
 
-    talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
+    
+    talk_to_me(text="Welcome to Markdown Mayheem", filename="new_welcome.mp3")
 
 
     if st.button("Playdoe Guy"):
@@ -318,7 +320,7 @@ def main():
         # 4) Read the markdown and render it
         if md_path.exists():
             talk_to_me(
-                text="Markdown is ready for you sirrr.", filename="markdown_ready.mp3"
+                text="Markdown is ready for youu.", filename="new_markdown_ready.mp3"
             )
 
             st.success(f"✅ Summary ready at `{md_path}`")

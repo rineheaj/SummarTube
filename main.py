@@ -194,7 +194,7 @@ def talk_to_me(text: str, filename: str):
         else:
             with open(filename, "rb") as f:
                 audio_bytes = f.read()
-            st.audio(data=audio_bytes, format="audio/mp3")
+                st.audio(data=audio_bytes, format="audio/mp3")
 
         # Path(filename).with_suffix(".txt").write_text(text, encoding="utf-8")
 

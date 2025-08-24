@@ -238,6 +238,7 @@ def talk_to_me(text: str, filename: str):
                     with open(target_file, "wb") as f:
                         for chunk in resp.iter_bytes():
                             f.write(chunk)
+            st.write(f"Sound file saved: {target_file}")
         except Exception as e:
             st.error(f"Could not write audio bytes from api to file\nERROR: {e}")
             

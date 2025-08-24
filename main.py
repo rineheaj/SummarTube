@@ -230,9 +230,9 @@ def run(basename: str, output_dir: str, video_id: str = DEFAULT_VIDEO_ID):
 def main():
     st.set_page_config(page_title="YouTube Video Summarizer", layout="centered")
     st.title("📽️ YouTube Video Summarizer")
-    st.header("Fetch a transcript", divider=True, width="stretch")
-    st.header("Summarize it with Groq", width="stretch")
-    st.header("Check out the Markdown", width="stretch")
+    st.header("Fetch a transcript", divider="red", width="stretch")
+    st.header("Summarize it with Groq", width="stretch", divider="white")
+    st.header("Check out the Markdown", width="stretch", divider="blue")
 
     talk_to_me(
         text="Welcome to Mr. Markdown.", filename="welcome.mp3"

@@ -273,7 +273,7 @@ def main():
     # 1) User inputs
     story_name = st.text_input("🗃️ File Name ", "")
     out_folder = st.text_input("📂 Folder Name")
-    vid_id = st.text_input("🎥 YouTube video ID", placeholder=None)
+    vid_id = st.text_input("🎥 YouTube Video ID", placeholder=None)
 
     
 

@@ -283,8 +283,16 @@ def main():
     # 2) Generate button
     if st.button("Generate & Preview"):
         if not story_name.strip():
-            st.error("Enter a story basename.")
+            st.error("Enter a filename.")
             return
+        if not out_folder.strip():
+            st.error("Enter a folder name")
+            return
+        if not vid_id.strip():
+            st.error("Enter a video ID")
+            return
+        
+    
 
         talk_to_me(
             text="Please wait while Groq works some magic", filename="wait_for_groq.mp3"

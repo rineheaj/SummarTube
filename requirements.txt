@@ -81,6 +81,7 @@ pandas
 pefile
 pillow
 platformdirs
+playsound
 plotly
 prometheus-client
 prompt-toolkit
@@ -112,6 +113,8 @@ python-dotenv
 python-multipart
 python-vlc
 pytz
+pywin32
+pywin32-ctypes
 pyyaml
 referencing
 requests

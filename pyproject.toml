@@ -1,8 +1,0 @@
-[project]
-name = "summer_dummer"
-version = "1.1.0"
-
-
-
-# leave dependencies empty if you want to use root deps from 
-dependencies = []

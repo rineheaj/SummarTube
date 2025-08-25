@@ -266,7 +266,7 @@ def main():
             path=Path(__file__).parent
             / "lottie_thottie"
             / "Animacin Yovillo Saludo.json",
-            height=500,
+            height=400,
         )
         talk_to_me(text="Welcome to Mr. Markdown", filename="welcome.mp3")
 

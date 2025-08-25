@@ -81,7 +81,6 @@ pandas
 pefile
 pillow
 platformdirs
-
 plotly
 prometheus-client
 prompt-toolkit

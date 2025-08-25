@@ -3,7 +3,7 @@ from rich.console import Console
 
 console = Console()
 
-req_file = Path(__file__).parent / "requirements.txt"
+req_file = Path(__file__).parent.parent / "requirements.txt"
 
 
 strip_these_lines = []

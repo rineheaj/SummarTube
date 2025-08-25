@@ -28,6 +28,7 @@ from deprecated import deprecated
 import vlc
 import warnings
 
+from classes import DownloadCenter
 
 console = Console()
 
@@ -340,6 +341,11 @@ def main():
                 st.markdown(styled_md, unsafe_allow_html=True)
             with tab2:
                 st.code(md_text, language="markdown")
+            
+            dc = DownloadCenter()
+            dc.add_text(label="MD in .txt from Groq", text_string=md_text)
+            dc.add_markdown(label="MD from Groq", md_string=md_text)
+            dc.render()
         else:
             st.error("Something went wrong: markdown file not found.")
 

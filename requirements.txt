@@ -91,7 +91,7 @@ pyasn1
 pyasn1-modules
 pycparser
 pydantic
-pydantic-ai
+pydantic-ai==0.5.9
 pydantic-ai-slim
 pydantic-core
 pydantic-evals

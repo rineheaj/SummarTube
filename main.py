@@ -262,7 +262,7 @@ def main():
     st.header("Check out the Markdown", width="stretch", divider="blue")
 
 
-    if st.button("Press me"):
+    if st.button("Press me for animated welcome message"):
         load_lottie(
             path=Path(__file__).parent
             / "lottie_thottie"

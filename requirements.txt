@@ -43,7 +43,7 @@ gitdb
 gitpython
 google-auth
 google-genai
-griffe==1.3.2
+griffe
 groq
 h11
 htbuilder

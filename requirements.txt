@@ -43,7 +43,7 @@ gitdb
 gitpython
 google-auth
 google-genai
-griffe
+griffe==1.3.2
 groq
 h11
 htbuilder
@@ -91,7 +91,7 @@ pyasn1
 pyasn1-modules
 pycparser
 pydantic
-pydantic-ai==0.5.9
+pydantic-ai
 pydantic-ai-slim
 pydantic-core
 pydantic-evals
